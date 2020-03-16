@@ -1,0 +1,22 @@
+{
+  "id": "image-typeahead",
+  "name": "UI Extension that allow editor to select an image using typeahead input with a preview of the selected image.",
+  "srcdoc": "index.html",
+  "fieldTypes": ["Symbol", "Text"],
+  "parameters": {
+    "instance": [
+      {
+        "id": "exampleParameter",
+        "type": "Symbol",
+        "name": "An example instance parameter"
+      }
+    ],
+    "installation": [
+      {
+        "id": "exampleParameter",
+        "type": "Symbol",
+        "name": "An example installation parameter"
+      }
+    ]
+  }
+}
