@@ -45,11 +45,16 @@ var app = new Vue({
             } else {
                 this.suggestions = [];
                 for (let player of this.players) {
-                    //console.log("player q: ", player.q);
-                    //console.log(player.q.indexOf("lionel"));
+                    /*
                     if (player.q.indexOf(this.query.toLowerCase()) > -1) {
                         console.log("got one or more matches", player.id);
                         this.suggestions.push(player);
+                    }
+                    */
+                    for (let token of player.q) {
+                        if (token.search(this.query) > -1) {
+                            this.addSuggestion(player);
+                        }
                     }
                 }
             }
@@ -58,6 +63,17 @@ var app = new Vue({
         },
         selectPlayer(player) {
             this.selectedPlayers.push(player);
+        },
+        addSuggestion(suggestedPlayer) {
+            let found = false;
+            for (let player of this.suggestions) {
+                if (player.id == suggestedPlayer.id) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                this.suggestions.push(suggestedPlayer);
+            }
         }
     }
 })
