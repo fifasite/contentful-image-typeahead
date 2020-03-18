@@ -10,21 +10,102 @@
   <!-- UI Extensions SDK -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
+  <style>
+    .Pill__Pill___2yQFD {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      background: #e5ebed;
+      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+      border-radius: .125rem;
+      border: none;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .css-16cn63x {
+      line-height: 1.5rem;
+      padding: 0.375rem 0px 0.375rem 0.625rem;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .Pill__Pill__label____EsBZ {
+      line-height: 1.5rem;
+      padding: .375rem .625rem;
+      font-size: .875rem;
+      color: #536171;
+      -webkit-box-flex: 2;
+      -ms-flex-positive: 2;
+      flex-grow: 2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .Pill__Pill__close-button___3OlnQ {
+      border: none;
+      border-left-color: currentcolor;
+      border-left-style: none;
+      border-left-width: medium;
+      border-left: 1px solid #c3cfd5;
+      padding: .375rem;
+      background: transparent;
+      -webkit-transition: background .1s ease-in-out;
+      transition: background .1s ease-in-out;
+    }
+
+    .Pill__Pill__close-button___3OlnQ:focus,
+    .Pill__Pill__close-button___3OlnQ:hover {
+      background: #d3dce0;
+      cursor: pointer;
+    }
+
+    .css-qq0611 {
+      margin-right: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .TabFocusTrap__TabFocusTrap___39Vty {
+      display: inherit;
+      outline: 0;
+    }
+
+    .Pill__Pill__icon___1NILR {
+      fill: #a9b9c0;
+      vertical-align: middle;
+    }
+  </style>
 </head>
 
 <body>
 
   <div id="app">
+    <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedPlayers"
+      v-bind:id="item.id">
+      <span class="Pill__Pill__label____EsBZ">{{item.name}}</span><button type="button"
+        @click="removeSelectedPlayer(item)"
+        class="Pill__Pill__close-button___3OlnQ a11y__focus-outline--default___2hwb1"><span tabindex="-1"
+          class="TabFocusTrap__TabFocusTrap___39Vty"><svg
+            class="Icon__Icon___38Epv Icon__Icon--small___1yGZK Icon__Icon--muted___3egnD Pill__Pill__icon___1NILR"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg></span></button>
+    </div>
+    <!--
     <label v-if="showSelectedPlayers"
       style="display: inline-block; color: #2a3039; font-weight: 600; margin-bottom: .5rem;">Players</label>
     <ul v-if="showSelectedPlayers" style="list-style: none; display: block; padding: 0;">
       <li v-for="item in selectedPlayers" v-bind:id="item.id"
         style="display: inline-block; margin-right: 15px; cursor: pointer;" @click="removeSelectedPlayer(item)">
-        <div
-          style="color: #808080; font-size: 13px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        <div style="color: #808080; font-size: 13px;">
           {{item.name}} &times;</div>
       </li>
     </ul>
+  -->
     <div class="cf-form-field">
       <input type="text" class="cf-form-input" v-model.trim="query" v-on:keyup="search()">
       <div class="cf-form-hint">Search by name of athlete</div>

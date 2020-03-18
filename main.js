@@ -37,7 +37,8 @@ var app = new Vue({
     },
     methods: {
         resetSuggestions() {
-            this.suggestions = this.players;
+            //this.suggestions = this.players;
+            this.suggestions = [];
         },
         search() {
             if (this.query === "") {
@@ -62,6 +63,8 @@ var app = new Vue({
             //this.suggestions.push(this.players[0]);
         },
         selectPlayer(selected) {
+            this.resetSuggestions();
+            this.query = null;
 
             let found = false;
             for (let player of this.selectedPlayers) {
