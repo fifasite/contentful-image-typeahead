@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <!-- UI Extensions CSS -->
@@ -7,11 +8,12 @@
   <!-- UI Extensions SDK -->
   <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
 </head>
+
 <body>
   <!-- Custom markup of the UI Extension -->
   <div class="cf-form-field">
     <input type="text" class="cf-form-input">
-    <div class="cf-form-hint">I am a custom UI Extension.</div>
+    <div class="cf-form-hint">I am a custom UI Extension!</div>
     <div class="cf-form-hint">Instance params: <span class="instance-param-value"></span></div>
     <div class="cf-form-hint">Installation params: <span class="installation-param-value"></span></div>
   </div>
@@ -23,7 +25,7 @@
     // When UI Extensions SDK is loaded the callback will be executed.
     window.contentfulExtension.init(initExtension);
 
-    function initExtension (extensionsApi) {
+    function initExtension(extensionsApi) {
       // "extensionsApi" is providing an interface documented here:
       // https://github.com/contentful/ui-extensions-sdk/blob/master/docs/ui-extensions-sdk-frontend.md
 
@@ -47,12 +49,12 @@
       window.addEventListener('onbeforeunload', unloadHandler);
 
       // Handler for external field value changes (e.g. when multiple authors are working on the same entry).
-      function valueChangeHandler (value) {
+      function valueChangeHandler(value) {
         inputEl.value = value || '';
       }
 
       // Event handler for keyboard input.
-      function keyboardInputHandler () {
+      function keyboardInputHandler() {
         var value = inputEl.value;
         if (typeof value !== 'string' || value === '') {
           field.removeValue();
@@ -62,7 +64,7 @@
       }
 
       // Event handler for window unload.
-      function unloadHandler () {
+      function unloadHandler() {
         window.removeEventListener('onbeforeunload', unloadHandler);
         inputEl.removeEventListener('input', keyboardInputHandler);
         detachValueChangeHandler();
@@ -70,4 +72,5 @@
     }
   </script>
 </body>
+
 </html>
