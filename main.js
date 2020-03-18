@@ -83,6 +83,11 @@ var app = new Vue({
             if (!found) {
                 this.suggestions.push(suggestedPlayer);
             }
+        },
+        removeSelectedPlayer(selected) {
+            this.selectedPlayers = this.selectedPlayers.filter(function (obj) {
+                return obj.id !== selected.id;
+            });
         }
     }
 })
