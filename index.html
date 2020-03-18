@@ -6,10 +6,15 @@
   <!-- UI Extensions CSS -->
   <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
   <!-- UI Extensions SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
 </head>
 
 <body>
+
+  <div id="app">
+    {{ message }}
+  </div>
   <!-- Custom markup of the UI Extension -->
   <div class="cf-form-field">
     <input type="text" class="cf-form-input">
@@ -71,6 +76,7 @@
       }
     }
   </script>
+  <script src="main.js"></script>
 </body>
 
 </html>
