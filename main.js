@@ -3,13 +3,13 @@ var app = new Vue({
     data: {
         query: null,
         players: [
-            { id: 1, name: "Lionel Messi", imgUrl: "/img/messi.jpg" },
-            { id: 2, name: "Cristiano Ronaldo", imgUrl: "/img/ronaldo.jpg" },
-            { id: 3, name: "Diego Maradona", imgUrl: "/img/maradona.jpg" },
-            { id: 4, name: "Zinedine Zidane", imgUrl: "/img/zidane.jpg" },
-            { id: 5, name: "Pele Edson Arantes do Nascimento", imgUrl: "/img/pele.jpg" },
-            { id: 6, name: "Johan Cruyff", imgUrl: "/img/cruyff.jpg" },
-            { id: 7, name: "Ronaldinho Ronaldo de Assis Moreira", imgUrl: "/img/ronaldinho.jpg" }
+            { id: 1, name: "Lionel Messi", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/messi.jpg" },
+            { id: 2, name: "Cristiano Ronaldo", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/ronaldo.jpg" },
+            { id: 3, name: "Diego Maradona", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/maradona.jpg" },
+            { id: 4, name: "Zinedine Zidane", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/zidane.jpg" },
+            { id: 5, name: "Pele Edson Arantes do Nascimento", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/pele.jpg" },
+            { id: 6, name: "Johan Cruyff", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/cruyff.jpg" },
+            { id: 7, name: "Ronaldinho Ronaldo de Assis Moreira", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/ronaldinho.jpg" }
         ],
         selectedPlayers: [],
         suggestions: []
@@ -61,8 +61,17 @@ var app = new Vue({
 
             //this.suggestions.push(this.players[0]);
         },
-        selectPlayer(player) {
-            this.selectedPlayers.push(player);
+        selectPlayer(selected) {
+
+            let found = false;
+            for (let player of this.selectedPlayers) {
+                if (player.id == selected.id) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                this.selectedPlayers.push(selected);
+            }
         },
         addSuggestion(suggestedPlayer) {
             let found = false;
