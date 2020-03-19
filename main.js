@@ -67,10 +67,15 @@ new Vue({
             player['q'] = str.split(" ");
         }
 
-        let cdata = window._ncp.getValue();
-        if (cdata) {
-            this.selectedPlayers = JSON.parse(cdata);
-        }
+        setTimeout(function () {
+            let cdata = window._ncp.getValue();
+            console.log("window._ncp", window._ncp);
+            console.log("cdata", cdata);
+            if (cdata) {
+                this.selectedPlayers = JSON.parse(cdata);
+            }
+        }, 5000)
+
 
 
 
