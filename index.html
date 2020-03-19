@@ -81,8 +81,6 @@
 <body>
 
   <div id="app">
-    <input id="dataString" v-bind:value="jsonsDataString" type="text" />
-    <pre>{{jsonsDataString}}</pre>
     <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedPlayers"
       v-bind:id="item.id">
       <span class="Pill__Pill__label____EsBZ">{{item}}</span><button type="button" @click="removeSelectedPlayer(item)"

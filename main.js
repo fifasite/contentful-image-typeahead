@@ -4,7 +4,7 @@ window.contentfulExtension.init(function (sdk) {
     sdk.window.startAutoResizer();
 
     // Get current value of field
-    let value = sdk.field.getValue()
+    //let value = sdk.field.getValue()
     console.log("[contentful-image-typeahead] value:", value);
 
     // Set value of field to "Hello World!"
@@ -40,12 +40,6 @@ window.contentfulExtension.init(function (sdk) {
                 }
                 return false;
             },
-            jsonsDataString() {
-                if (this.selectedPlayers.length > 0) {
-                    return JSON.stringify(this.selectedPlayers);
-                }
-                return "";
-            }
         },
         mounted() {
             // When UI Extensions SDK is loaded the callback will be executed.
@@ -55,6 +49,14 @@ window.contentfulExtension.init(function (sdk) {
                 const str = player.name.toLowerCase();
                 player['q'] = str.split(" ");
             }
+
+            let cdata = sdk.field.getValue();
+            if (cdata) {
+                this.selectedPlayers = JSON.parse(cdata);
+            }
+
+
+
             this.resetSuggestions();
         },
         methods: {
