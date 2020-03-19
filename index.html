@@ -81,20 +81,22 @@
 <body>
 
   <div id="app">
-    <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedPlayers"
-      v-bind:id="item.id">
-      <span class="Pill__Pill__label____EsBZ">{{item}}</span><button type="button" @click="removeSelectedPlayer(item)"
-        class="Pill__Pill__close-button___3OlnQ a11y__focus-outline--default___2hwb1"><span tabindex="-1"
-          class="TabFocusTrap__TabFocusTrap___39Vty"><svg
-            class="Icon__Icon___38Epv Icon__Icon--small___1yGZK Icon__Icon--muted___3egnD Pill__Pill__icon___1NILR"
-            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path
-              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-            </path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg></span></button>
-    </div>
-    <!--
+    <div v-if="loading">Loading ...</div>
+    <div v-if="!loading">
+      <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedPlayers"
+        v-bind:id="item.id">
+        <span class="Pill__Pill__label____EsBZ">{{item}}</span><button type="button" @click="removeSelectedPlayer(item)"
+          class="Pill__Pill__close-button___3OlnQ a11y__focus-outline--default___2hwb1"><span tabindex="-1"
+            class="TabFocusTrap__TabFocusTrap___39Vty"><svg
+              class="Icon__Icon___38Epv Icon__Icon--small___1yGZK Icon__Icon--muted___3egnD Pill__Pill__icon___1NILR"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+              </path>
+              <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg></span></button>
+      </div>
+      <!--
     <label v-if="showSelectedPlayers"
       style="display: inline-block; color: #2a3039; font-weight: 600; margin-bottom: .5rem;">Players</label>
     <ul v-if="showSelectedPlayers" style="list-style: none; display: block; padding: 0;">
@@ -105,26 +107,27 @@
       </li>
     </ul>
   -->
-    <div class="cf-form-field">
-      <input type="text" class="cf-form-input" v-model.trim="query" v-on:keyup="search()">
-      <div class="cf-form-hint">Search by name of athlete</div>
-    </div>
-    <div class="cf-form-field">
-      <!--
+      <div class="cf-form-field">
+        <input type="text" class="cf-form-input" v-model.trim="query" v-on:keyup="search()">
+        <div class="cf-form-hint">Search by name of athlete</div>
+      </div>
+      <div class="cf-form-field">
+        <!--
       <label v-if="showSuggestions" style="display: inline-block;
       color: #2a3039;
       font-weight: 600;
       margin-bottom: .5rem;">Suggestions</label>-->
-      <ul v-if="showSuggestions" style="list-style: none; display: block; padding: 0;">
-        <li v-for="item in suggestions" v-bind:id="item.id"
-          style="display: inline-block; margin-right: 15px; cursor: pointer;" @click="selectPlayer(item)">
-          <div><img :src="item.imgUrl" style="border-radius: 8px;" /></div>
-          <div
-            style="color: #808080; font-size: 13px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            {{item.name}}</div>
-        </li>
-      </ul>
+        <ul v-if="showSuggestions" style="list-style: none; display: block; padding: 0;">
+          <li v-for="item in suggestions" v-bind:id="item.id"
+            style="display: inline-block; margin-right: 15px; cursor: pointer;" @click="selectPlayer(item)">
+            <div><img :src="item.imgUrl" style="border-radius: 8px;" /></div>
+            <div
+              style="color: #808080; font-size: 13px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{item.name}}</div>
+          </li>
+        </ul>
 
+      </div>
     </div>
   </div>
 

@@ -32,6 +32,7 @@ window.contentfulExtension.init(function (sdk) {
 new Vue({
     el: '#app',
     data: {
+        loading: true,
         query: null,
         players: [
             { id: 1, name: "Lionel Messi", imgUrl: "https://thomaskokholm.github.io/contentful-image-typeahead/img/messi.jpg" },
@@ -72,8 +73,19 @@ new Vue({
             let cdata = window._ncp.getValue();
             console.log("window._ncp", window._ncp);
             console.log("cdata", cdata);
+            this.loading = false;
             if (cdata) {
-                this.selectedPlayers = JSON.parse(cdata);
+                let arr = JSON.parse(cdata);
+                console.log("arr:", arr);
+                if (Array.isArray(arr)) {
+                    console.log("we have arr as an array");
+                    for (let a of arr) {
+                        this.selectedPlayers.push(a);
+                    }
+                } else {
+                    console.log("arr is not an array");
+                }
+
             }
         }, 5000)
 
