@@ -69,7 +69,7 @@ new Vue({
             player['q'] = str.split(" ");
         }
 
-        setTimeout(function () {
+        setTimeout(() => {
             let cdata = window._ncp.getValue();
             console.log("window._ncp", window._ncp);
             console.log("cdata", cdata);
@@ -148,7 +148,7 @@ new Vue({
             }
         },
         removeSelectedPlayer(selected) {
-            this.selectedPlayers = this.selectedPlayers.filter(function (obj) {
+            this.selectedPlayers = this.selectedPlayers.filter((obj) => {
                 return obj.name !== selected.name;
             });
         }
