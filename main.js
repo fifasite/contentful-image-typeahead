@@ -12,7 +12,7 @@ window.contentfulExtension.init(function (sdk) {
     console.log("[contentful-image-typeahead] value:", value);
 
     // Set value of field to "Hello World!"
-    sdk.field.setValue("Hello world!")
+    //sdk.field.setValue("Hello world!")
 
     const _sdk = sdk;
     window._ncp["getValue"] = function () {
