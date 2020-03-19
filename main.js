@@ -1,4 +1,5 @@
-var app = new Vue({
+let FIELD = null;
+new Vue({
     el: '#app',
     data: {
         query: null,
@@ -26,9 +27,30 @@ var app = new Vue({
                 return true;
             }
             return false;
+        },
+        jsonsDataString() {
+            if (this.selectedPlayers.length > 0) {
+                return JSON.stringify(this.selectedPlayers);
+            }
+            return "";
         }
     },
     mounted() {
+        // When UI Extensions SDK is loaded the callback will be executed.
+        window.contentfulExtension.init(initExtension);
+
+        function initExtension(extensionsApi) {
+            // "extensionsApi" is providing an interface documented here:
+            // https://github.com/contentful/ui-extensions-sdk/blob/master/docs/ui-extensions-sdk-frontend.md
+
+            // Automatically adjust UI Extension size in the Web App.
+            extensionsApi.window.startAutoResizer();
+
+            //  The FIELD this UI Extension is assigned to.
+            FIELD = extensionsApi.field;
+            console.log("FIELD", FIELD);
+        }
+
         for (let player of this.players) {
             const str = player.name.toLowerCase();
             player['q'] = str.split(" ");
@@ -68,12 +90,18 @@ var app = new Vue({
 
             let found = false;
             for (let player of this.selectedPlayers) {
-                if (player.id == selected.id) {
+                if (player == selected.name) {
                     found = true;
                 }
             }
             if (!found) {
-                this.selectedPlayers.push(selected);
+                this.selectedPlayers.push(selected.name);
+                if (FIELD) {
+                    FIELD.setValue(JSON.stringify(this.selectedPlayers));
+                } else {
+                    console.error("FIELD is null");
+                }
+
             }
         },
         addSuggestion(suggestedPlayer) {
@@ -89,7 +117,7 @@ var app = new Vue({
         },
         removeSelectedPlayer(selected) {
             this.selectedPlayers = this.selectedPlayers.filter(function (obj) {
-                return obj.id !== selected.id;
+                return obj.name !== selected.name;
             });
         }
     }
