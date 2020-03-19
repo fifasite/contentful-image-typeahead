@@ -5,13 +5,14 @@ window._ncp = {
 window.contentfulExtension.init(function (sdk) {
     // Automatically adjust UI Extension size in the Web App.
     sdk.window.startAutoResizer();
+    console.log("INITIALIZED");
 
     // Get current value of field
-    //let value = sdk.field.getValue()
+    let value = sdk.field.getValue()
     console.log("[contentful-image-typeahead] value:", value);
 
     // Set value of field to "Hello World!"
-    //sdk.field.setValue("Hello world!")
+    sdk.field.setValue("Hello world!")
 
     const _sdk = sdk;
     window._ncp["getValue"] = function () {
