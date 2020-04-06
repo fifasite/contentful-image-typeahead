@@ -85,7 +85,7 @@
     <div v-if="!loading">
       <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedPlayers"
         v-bind:id="item.id">
-        <span class="Pill__Pill__label____EsBZ">{{item}}</span><button type="button" @click="removeSelectedPlayer(item)"
+        <span class="Pill__Pill__label____EsBZ">{{item.name}}</span><button type="button" @click="removeSelectedPlayer(item)"
           class="Pill__Pill__close-button___3OlnQ a11y__focus-outline--default___2hwb1"><span tabindex="-1"
             class="TabFocusTrap__TabFocusTrap___39Vty"><svg
               class="Icon__Icon___38Epv Icon__Icon--small___1yGZK Icon__Icon--muted___3egnD Pill__Pill__icon___1NILR"
@@ -292,7 +292,7 @@ new Vue({
             }
             if (!found) {
                 if (this.singleSelection) {
-                  this.selectedPlayers = [selected.name];
+                  this.selectedPlayers = [selected];
                 } else {
                   this.selectedPlayers.push(selected.name);
                 }
