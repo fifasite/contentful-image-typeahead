@@ -164,6 +164,19 @@ window.contentfulExtension.init(function (sdk) {
 });
 
 
+window.debounce = function(callback, delay) {
+  var timeoutID = null
+  return function () {
+    clearTimeout(timeoutID)
+    var args = arguments
+    var that = this
+    timeoutID = setTimeout(function () {
+      callback.apply(that, args)
+    }, delay)
+  }
+}
+
+
 new Vue({
     el: '#app',
     data: {
@@ -223,7 +236,7 @@ new Vue({
                 }
 
             }
-        }, 5000)
+        }, 3000)
         this.resetSuggestions();
     },
     methods: {
@@ -253,7 +266,7 @@ new Vue({
 
             //this.suggestions.push(this.players[0]);
         },
-        searchInApi() {
+        searchInApi : window.debounce(function() {
           if (this.query === "") {
                 this.resetSuggestions();
           } else {
@@ -279,7 +292,7 @@ new Vue({
               }
             )
           }
-        },
+        }, 250),
         selectPlayer(selected) {
             this.resetSuggestions();
             this.query = null;
