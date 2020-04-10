@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- UI Extensions CSS -->
+  <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+  <link rel="stylesheet" href="https://unpkg.com/contentful-ui-extensions-sdk@3.11.0/dist/cf-extension.css">
+
+  <!-- UI Extensions SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
+  <style>
+    .Pill__Pill___2yQFD {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      background: #e5ebed;
+      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+      border-radius: .125rem;
+      border: none;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .css-16cn63x {
+      line-height: 1.5rem;
+      padding: 0.375rem 0px 0.375rem 0.625rem;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .Pill__Pill__label____EsBZ {
+      line-height: 1.5rem;
+      padding: .375rem .625rem;
+      font-size: .875rem;
+      color: #536171;
+      -webkit-box-flex: 2;
+      -ms-flex-positive: 2;
+      flex-grow: 2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .Pill__Pill__close-button___3OlnQ {
+      border: none;
+      border-left-color: currentcolor;
+      border-left-style: none;
+      border-left-width: medium;
+      border-left: 1px solid #c3cfd5;
+      padding: .375rem;
+      background: transparent;
+      -webkit-transition: background .1s ease-in-out;
+      transition: background .1s ease-in-out;
+    }
+
+    .Pill__Pill__close-button___3OlnQ:focus,
+    .Pill__Pill__close-button___3OlnQ:hover {
+      background: #d3dce0;
+      cursor: pointer;
+    }
+
+    .css-qq0611 {
+      margin-right: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .TabFocusTrap__TabFocusTrap___39Vty {
+      display: inherit;
+      outline: 0;
+    }
+
+    .Pill__Pill__icon___1NILR {
+      fill: #a9b9c0;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <div v-if="loading">Loading...</div>
+    <div v-if="!loading">
+      <div class="Pill__Pill___2yQFD a11y__focus-outline--default___2hwb1 css-qq0611" v-for="item in selectedItems"
+        v-bind:id="item.id">
+        <span class="Pill__Pill__label____EsBZ">{{item.name}}</span><button type="button" @click="removeSelectedItem(item)"
+          class="Pill__Pill__close-button___3OlnQ a11y__focus-outline--default___2hwb1"><span tabindex="-1"
+            class="TabFocusTrap__TabFocusTrap___39Vty"><svg
+              class="Icon__Icon___38Epv Icon__Icon--small___1yGZK Icon__Icon--muted___3egnD Pill__Pill__icon___1NILR"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+              </path>
+              <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg></span></button>
+      </div>
+      <div class="cf-form-field">
+        <input type="text" class="cf-form-input" v-model.trim="query" v-on:keyup="searchInApi()">
+        <div class="cf-form-hint">Search by team name</div>
+      </div>
+      <div class="cf-form-field">
+        <!--
+      <label v-if="showSuggestions" style="display: inline-block;
+      color: #2a3039;
+      font-weight: 600;
+      margin-bottom: .5rem;">Suggestions</label>-->
+        <ul v-if="showSuggestions" style="list-style: none; display: block; padding: 0;">
+          <li v-for="item in suggestions" v-bind:id="item.id"
+            style="display: inline-block; margin-right: 15px; cursor: pointer;" @click="selectItem(item)">
+            <div>
+              <img :src="item.imgUrl" style="border-radius: 8px; height: 64px; width: 64px;" /></div>
+            <div
+              style="color: #808080; font-size: 13px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{item.name}}</div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+window.debounce = function(callback, delay) {
+  var timeoutID = null
+  return function () {
+    clearTimeout(timeoutID)
+    var args = arguments
+    var that = this
+    timeoutID = setTimeout(function () {
+      callback.apply(that, args)
+    }, delay)
+  }
+}
+
+
+new Vue({
+    el: '#app',
+    data: {
+        loading: true,
+        query: null,
+        selectedItems: [],
+        suggestions: [],
+        singleSelection: true,
+        sdk: null,
+    },
+    computed: {
+        showSuggestions() {
+            if (this.suggestions.length > 0) {
+                return true;
+            }
+            return false;
+        },
+        showSelectedTeams() {
+            if (this.selectedTeams.length > 0) {
+                return true;
+            }
+            return false;
+        },
+    },
+    mounted() {
+      window.contentfulExtension.init(function (sdk) {
+        this.sdk = sdk;  
+        // Automatically adjust UI Extension size in the Web App.
+        sdk.window.startAutoResizer();
+        
+        let value = sdk.field.getValue();
+        if (value && value.teams && value.players) {
+          this.selectedItems = value.teams.concat(value.players);
+        }
+        this.loading = false;
+      }.bind(this));
+    },
+    methods: {
+      setFieldValue() {
+        let teams = this.selectedItems.filter(x => x.type == "team");
+        let players = this.selectedItems.filter(x => x.type == "player");
+        this.sdk.field.setValue({teams, players});
+      },  
+      resetSuggestions() {
+        this.suggestions = [];
+      },
+      selectItem(selected) {
+        this.resetSuggestions();
+        this.query = null;
+        if (!this.selectedItems.find(x => x.id == selected.id)) {
+          this.selectedItems.push(selected);
+          this.setFieldValue();  
+        }
+      },
+      addSuggestion(suggestedItem) {
+        if (!this.suggestions.find(x => x.id == suggestedItem.id)) {
+            this.suggestions.push(suggestedItem);
+        }
+      },
+      removeSelectedItem(selected) {
+        this.selectedItems = this.selectedItems.filter((x) => {
+            return x.id !== x.id;
+        });
+      },
+      searchInApi : window.debounce(function() {
+        this.resetSuggestions();
+        this.fetchTeams();
+        this.fetchPlayers();
+      }, 250),
+      fetchTeams() {
+        this.fetchFromFDCP('https://api.fifa.com/api/v1/teams/search?name=', (result) => {
+          result.Results.forEach(element => {
+              let team = { 
+                id : element.IdTeam, 
+                name : element.Name[0].Description, 
+                type: element.Type == 0 ? "club" : "national", 
+                gender: element.Gender == 1 ? "male" :  "female",
+                footballType: element.FootballType == 0 ? "football" : "other", //1 futsal, 2 beach, 3 esport, 99 unknown
+                ageType: element.AgeType == 7 ? "main" : "other", //0 unknown, 1 u17, 2 u18, 3 u19, 4 u20, 5 olympic, 6 youth olympic
+                imgUrl: `https://api.fifa.com/api/v1/picture/teams-sq-4/${element.IdTeam}`
+              }
+              if (team.gender == "male" && team.footballType == "football" && team.ageType == "main")
+                this.addSuggestion(team);
+                fetch(team.imgUrl)
+                  .then(response => {
+                      if (response.headers.get("content-length") == "0")
+                      team.imgUrl = "https://scontent.fwaw5-1.fna.fbcdn.net/v/t1.0-1/p200x200/23131951_1356425277818309_7251100280094235918_n.png?_nc_cat=110&_nc_sid=1eb0c7&_nc_ohc=lDh4d-uPbnYAX8QMTg-&_nc_ht=scontent.fwaw5-1.fna&oh=1fc9020d9f1379e73dd3cd2727d55603&oe=5EB670A4";
+                  });
+                
+            })
+        });
+      },
+      fetchPlayers() {
+        this.fetchFromFDCP('https://api.fifa.com/api/v1/players/search?name=', (result) => {
+          result.Results.forEach(element => {
+                  let player = { id : element.IdPlayer, name : element.Name[0].Description, imgUrl: `https://api.fifa.com/api/v1/picture/players/2018fwc/${element.IdPlayer}_sq-64` }
+                  this.addSuggestion(player);
+                  fetch(player.imgUrl)
+                  .then(response => {
+                      if (response.headers.get("content-length") == "0")
+                      player.imgUrl = "https://scontent.fwaw5-1.fna.fbcdn.net/v/t1.0-1/p200x200/23131951_1356425277818309_7251100280094235918_n.png?_nc_cat=110&_nc_sid=1eb0c7&_nc_ohc=lDh4d-uPbnYAX8QMTg-&_nc_ht=scontent.fwaw5-1.fna&oh=1fc9020d9f1379e73dd3cd2727d55603&oe=5EB670A4";
+                  });
+                });
+              });
+      },
+      fetchFromFDCP(queryprefix, resultHandler) {
+        fetch (
+          queryprefix.concat(this.query)
+        )
+        .then((res) => res.json())
+        .then(resultHandler,
+          (error) => {
+            this.setState({
+              error,
+            })
+          })
+      },
+    },
+});
+
+  </script>
+</body>
+
+</html>
