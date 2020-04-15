@@ -175,8 +175,8 @@ new Vue({
     },
     methods: {
       setFieldValue() {
-        let teams = this.selectedItems.filter(x => x.type == "team");
-        let players = this.selectedItems.filter(x => x.type == "player");
+        let teams = this.selectedItems.filter(x => x.category == "team");
+        let players = this.selectedItems.filter(x => x.category == "player");
         this.sdk.field.setValue({teams, players});
       },  
       resetSuggestions() {
@@ -210,6 +210,7 @@ new Vue({
           result.Results.forEach(element => {
               let team = { 
                 id : element.IdTeam, 
+                category: "team",
                 name : element.Name[0].Description, 
                 type: element.Type == 0 ? "club" : "national", 
                 gender: element.Gender == 1 ? "male" :  "female",
@@ -231,7 +232,7 @@ new Vue({
       fetchPlayers() {
         this.fetchFromFDCP('https://api.fifa.com/api/v1/players/search?name=', (result) => {
           result.Results.forEach(element => {
-                  let player = { id : element.IdPlayer, name : element.Name[0].Description, imgUrl: `https://api.fifa.com/api/v1/picture/players/2018fwc/${element.IdPlayer}_sq-64` }
+                  let player = { id : element.IdPlayer, category: "player", name : element.Name[0].Description, imgUrl: `https://api.fifa.com/api/v1/picture/players/2018fwc/${element.IdPlayer}_sq-64` }
                   this.addSuggestion(player);
                   fetch(player.imgUrl)
                   .then(response => {
