@@ -98,7 +98,7 @@
       </div>
       <div class="cf-form-field">
         <input type="text" class="cf-form-input" v-model.trim="query" v-on:keyup="searchInApi()">
-        <div class="cf-form-hint">Search by player or team name</div>
+        <div class="cf-form-hint">Search by player/team/location/competition name</div>
       </div>
       <div class="cf-form-field">
         <!--
@@ -167,9 +167,16 @@ new Vue({
         sdk.window.startAutoResizer();
         
         let value = sdk.field.getValue();
-        if (value && value.teams && value.players) {
-          this.selectedItems = value.teams.concat(value.players);
-        }
+        let selected = [];
+        if (value && value.teams)
+          selected = selected.concat(value.teams)
+        if (value && value.players)
+          selected = selected.concat(value.players)
+        if (value && value.locations)
+          selected = selected.concat(value.locations)
+        if (value && value.competitions)
+          selected = selected.concat(value.competitions)
+        this.selectedItems = selected;
         this.loading = false;
       }.bind(this));
     },
@@ -177,7 +184,9 @@ new Vue({
       setFieldValue() {
         let teams = this.selectedItems.filter(x => x.category == "team");
         let players = this.selectedItems.filter(x => x.category == "player");
-        this.sdk.field.setValue({teams, players});
+        let locations = this.selectedItems.filter(x => x.category == "location");
+        let competitions = this.selectedItems.filter(x => x.category == "competition");
+        this.sdk.field.setValue({teams, players, locations, competitions});
       },  
       resetSuggestions() {
         this.suggestions = [];
@@ -204,6 +213,8 @@ new Vue({
         this.resetSuggestions();
         this.fetchTeams();
         this.fetchPlayers();
+        this.fetchLocations();
+        this.fetchCompetitions();
       }, 250),
       fetchTeams() {
         this.fetchFromFDCP('https://api.fifa.com/api/v1/teams/search?name=', (result) => {
@@ -241,6 +252,24 @@ new Vue({
                   });
                 });
               });
+      },
+      fetchCompetitions() {
+        this.fetchFromFDCP('https://api.fifa.com/api/v1/competitions/search?name=', (result) => {
+          result.Results.forEach(element => {
+                  let competition = { id : element.IdCompetition, category: "competition", name : element.Name[0].Description, 
+                  imgUrl: "https://scontent.fwaw5-1.fna.fbcdn.net/v/t1.0-1/p200x200/23131951_1356425277818309_7251100280094235918_n.png?_nc_cat=110&_nc_sid=1eb0c7&_nc_ohc=lDh4d-uPbnYAX8QMTg-&_nc_ht=scontent.fwaw5-1.fna&oh=1fc9020d9f1379e73dd3cd2727d55603&oe=5EB670A4" }
+                  this.addSuggestion(competition);
+                });
+              });
+      },
+      fetchLocations() {
+        this.fetchFromFDCP('https://api.fifa.com/api/v1/cities/search?name=', (result) => {
+          result.Results.forEach(element => {
+                  let location = { id : element.IdCity, category: "location", name : element.Name,
+                  imgUrl: "https://cdn2.iconfinder.com/data/icons/pittogrammi/142/94-512.png" }
+                  this.addSuggestion(location);
+                });
+              }); 
       },
       fetchFromFDCP(queryprefix, resultHandler) {
         fetch (
