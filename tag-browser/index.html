@@ -206,7 +206,7 @@ new Vue({
       },
       removeSelectedItem(selected) {
         this.selectedItems = this.selectedItems.filter((x) => {
-            return x.id !== x.id;
+            return x.id !== selected.id;
         });
       },
       searchInApi : window.debounce(function() {
