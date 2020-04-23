@@ -66,7 +66,7 @@ export class App extends React.Component {
   render() {
     return (
       <Form className="f36-margin--l">
-        <DisplayText>Entry extension demo</DisplayText>
+        <DisplayText>Entry extension demo now form github</DisplayText>
         <Paragraph>
           This demo uses a single UI Extension to render the whole editor for an entry.
         </Paragraph>
