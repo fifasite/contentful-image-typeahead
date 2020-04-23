@@ -1,0 +1,5 @@
+{
+  "id": "fifa-liveblog-extension",
+  "name": "fifa-liveblog-extension",
+  "srcdoc": "./build/index.html"
+}
