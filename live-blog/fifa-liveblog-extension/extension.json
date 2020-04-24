@@ -1,5 +1,15 @@
 {
   "id": "fifa-liveblog-extension",
   "name": "fifa-liveblog-extension",
-  "srcdoc": "./build/index.html"
+  "srcdoc": "./build/index.html",
+  "parameters": {
+    "instance": [],
+    "installation": [
+      {
+        "id": "server",
+        "type": "Symbol",
+        "name": "Preview server"
+      }
+    ]
+  }
 }
