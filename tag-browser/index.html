@@ -115,11 +115,10 @@
               style="color: #808080; font-size: 13px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
               {{item.name}}</div>
               <div
-              style="color: #808080; font-size: 10px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-              {{item.category}}</div>
+              style="color: #808080; font-size: 10px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> 
+              {{item.category + (item.category == 'team' ? ', ' + item.type : '')}}</div>
           </li>
         </ul>
-
       </div>
     </div>
   </div>
